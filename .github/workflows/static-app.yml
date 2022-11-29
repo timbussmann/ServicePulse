@@ -30,7 +30,7 @@ jobs:
         run: |
           MINVER_VERSION=$(minver .)
           echo $MINVER_VERSION
-          sed -i 's/1.2.0/$MINVER_VERSION' src/ServicePulse.Host/app/js/app.constants.js
+          sed -i "s/1.2.0/$MINVER_VERSION" src/ServicePulse.Host/app/js/app.constants.js
       - name: Deploy static web app
         id: deploy
         uses: Azure/static-web-apps-deploy@v1
