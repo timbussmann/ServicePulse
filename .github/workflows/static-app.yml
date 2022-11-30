@@ -1,9 +1,12 @@
 name: Azure Static Web Apps CI/CD
 
 on:
+  # TODO: remove
   push:
     branches:
       - master
+  # Run on new PRs against main branch
+  # These changes will be deployed to pre-production slots by the static-web-apps-deploy action
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
@@ -17,13 +20,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          submodules: true
+          fetch-depth: 0
       - name: Install Host npm packages
         run: npm run load
         working-directory: src/ServicePulse.Host
       - name: Install Host npm packages
         run: npm run load
-        working-directory: src/ServicePulse.Host        
+        working-directory: src/ServicePulse.Host
+      - name: Install minver
+        run: dotnet tool install -g minver-cli
+      - name: Replace ServicePulse version
+        run: |
+          MINVER_VERSION=$(minver .)
+          sed -i "s/1.2.0/$MINVER_VERSION/" src/ServicePulse.Host/app/js/app.constants.js
       - name: Deploy static web app
         id: deploy
         uses: Azure/static-web-apps-deploy@v1
