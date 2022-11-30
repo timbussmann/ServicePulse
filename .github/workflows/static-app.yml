@@ -3,8 +3,6 @@ name: Azure Static Web Apps CI/CD
 on:
   # Run when a new tag has been pushed onto the master branch
   push:
-    branches:
-      - master
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
   # Run on new PRs against main branch
@@ -33,7 +31,7 @@ jobs:
         run: dotnet tool install -g minver-cli
       - name: Replace ServicePulse version
         run: |
-          MINVER_VERSION=$(minver .)
+          MINVER_VERSION=$(minver --auto-increment minor .)
           sed -i "s/1.2.0/$MINVER_VERSION/" src/ServicePulse.Host/app/js/app.constants.js
       - name: Deploy static web app
         id: deploy
