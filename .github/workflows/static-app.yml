@@ -31,7 +31,7 @@ jobs:
         run: dotnet tool install -g minver-cli
       - name: Replace ServicePulse version
         run: |
-          MINVER_VERSION=$(minver --auto-increment minor .)
+          MINVER_VERSION=$(minver .)
           sed -i "s/1.2.0/$MINVER_VERSION/" src/ServicePulse.Host/app/js/app.constants.js
       - name: Deploy static web app
         id: deploy
